@@ -1,0 +1,1707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="Health Benefits" />
+  <meta name="theme-color" content="#0f766e" />
+  <title>Health Benefits — Authorized Staff Only / 医护优惠安全系统</title>
+  <style>
+    :root {
+      --primary: #0f766e;
+      --primary-hover: #115e59;
+      --primary-soft: #ccfbf1;
+      --accent: #0284c7;
+      --accent-soft: #e0f2fe;
+      --gold: #b45309;
+      --gold-soft: #fef3c7;
+      --bg: #f1f5f9;
+      --card: #ffffff;
+      --text: #0f172a;
+      --muted: #64748b;
+      --border: #e2e8f0;
+      --danger: #dc2626;
+      --danger-soft: #fee2e2;
+      --green: #15803d;
+      --green-soft: #dcfce7;
+      --radius: 12px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+      font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", "Segoe UI", Roboto, sans-serif;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding: calc(16px + env(safe-area-inset-top)) 14px calc(48px + env(safe-area-inset-bottom));
+    }
+
+    .container { max-width: 1020px; margin: 0 auto; }
+    .hidden { display: none !important; }
+
+    /* Login Gate */
+    .login-shell {
+      max-width: 440px;
+      margin: 28px auto;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px 24px;
+      box-shadow: 0 12px 32px rgba(15, 23, 42, 0.08);
+    }
+
+    .login-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 18px;
+    }
+
+    .lock-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--primary-soft);
+      color: var(--primary);
+      padding: 5px 12px;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 700;
+    }
+
+    .login-shell h1 {
+      font-size: 1.55rem;
+      color: var(--primary);
+      margin-bottom: 6px;
+    }
+
+    .login-shell .sub {
+      font-size: 0.9rem;
+      color: var(--muted);
+      margin-bottom: 20px;
+      line-height: 1.45;
+    }
+
+    .server-toggle {
+      background: none;
+      border: none;
+      color: var(--accent);
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      margin-bottom: 12px;
+      padding: 4px 0;
+    }
+
+    .server-config-box {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px;
+      margin-bottom: 16px;
+    }
+
+    /* Top Bar inside Authenticated App */
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .user-cluster {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+    }
+
+    .chip-green { background: var(--green-soft); color: var(--green); }
+    .chip-blue { background: var(--accent-soft); color: var(--accent); }
+    .chip-red { background: var(--danger-soft); color: var(--danger); }
+    .chip-slate { background: #e2e8f0; color: #334155; }
+
+    .lang-toggle {
+      display: inline-flex;
+      background: #e2e8f0;
+      border-radius: 999px;
+      padding: 3px;
+    }
+
+    .lang-btn {
+      border: none;
+      background: transparent;
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--muted);
+      cursor: pointer;
+    }
+
+    .lang-btn.active {
+      background: var(--card);
+      color: var(--primary);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+    }
+
+    header { text-align: center; margin-bottom: 16px; }
+    header h1 { font-size: 1.75rem; color: var(--primary); letter-spacing: -0.02em; }
+    header p { color: var(--muted); margin-top: 4px; font-size: 0.92rem; }
+
+    .promo-strip { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 10px; }
+    .pill { padding: 6px 14px; border-radius: 999px; font-size: 0.84rem; font-weight: 600; }
+    .pill-first { background: var(--gold-soft); color: var(--gold); }
+    .pill-continuing { background: var(--accent-soft); color: var(--accent); }
+
+    .today-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 12px 16px;
+      margin-bottom: 14px;
+    }
+    .today-bar-title { font-weight: 700; font-size: 0.9rem; }
+    .today-metrics { display: flex; gap: 14px; flex-wrap: wrap; font-size: 0.88rem; }
+    .today-metric { display: inline-flex; align-items: center; gap: 6px; font-weight: 600; }
+    .dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; }
+    .dot-new { background: #d97706; }
+    .dot-return { background: var(--primary); }
+    .dot-total { background: var(--accent); }
+    .dot-rev { background: #16a34a; }
+
+    .tabs {
+      display: flex;
+      gap: 6px;
+      background: #e2e8f0;
+      padding: 6px;
+      border-radius: var(--radius);
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+    }
+
+    .tab-btn {
+      flex: 1;
+      min-width: 115px;
+      border: none;
+      background: transparent;
+      min-height: 44px;
+      padding: 10px 8px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.86rem;
+      color: var(--muted);
+      cursor: pointer;
+    }
+    .tab-btn.active {
+      background: var(--card);
+      color: var(--primary);
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 24px;
+      box-shadow: 0 4px 16px rgba(15, 23, 42, 0.06);
+      border: 1px solid var(--border);
+    }
+    .panel { display: none; }
+    .panel.active { display: block; }
+
+    h2 { font-size: 1.25rem; margin-bottom: 14px; }
+    h3 { font-size: 1.02rem; margin: 24px 0 12px; color: #1e293b; }
+    .section-divider { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+    .form-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+    .form-group { margin-bottom: 14px; }
+
+    label { display: block; font-weight: 600; font-size: 0.88rem; margin-bottom: 6px; color: #334155; }
+
+    input[type="text"],
+    input[type="tel"],
+    input[type="number"],
+    input[type="url"],
+    input[type="password"],
+    input[type="month"] {
+      width: 100%;
+      min-height: 44px;
+      padding: 10px 13px;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      font-size: 16px;
+      background: #fff;
+      color: var(--text);
+    }
+    input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.12); }
+
+    .row { display: flex; gap: 10px; align-items: center; }
+    .row input { flex: 1; }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      padding: 10px 18px;
+      border-radius: 8px;
+      border: none;
+      font-weight: 600;
+      font-size: 0.94rem;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .btn:disabled { opacity: 0.6; cursor: not-allowed; }
+    .btn-primary { background: var(--primary); color: #fff; }
+    .btn-primary:hover:not(:disabled) { background: var(--primary-hover); }
+    .btn-secondary { background: #e2e8f0; color: var(--text); }
+    .btn-danger { background: var(--danger); color: #fff; }
+    .btn-danger-sm { background: var(--danger-soft); color: var(--danger); min-height: 32px; padding: 5px 10px; font-size: 0.8rem; }
+    .btn-full { width: 100%; }
+
+    .alert { padding: 12px 14px; border-radius: 8px; margin-top: 14px; font-size: 0.9rem; display: none; line-height: 1.45; }
+    .alert.show { display: block; }
+    .alert-error { background: #fee2e2; color: #991b1b; }
+    .alert-success { background: #dcfce7; color: #166534; }
+    .alert-info { background: var(--accent-soft); color: #075985; }
+
+    .guide-list { display: grid; gap: 12px; margin-top: 12px; }
+    .guide-step { display: flex; gap: 14px; background: #f8fafc; border: 1px solid var(--border); border-radius: 10px; padding: 15px; }
+    .step-num { width: 30px; height: 30px; border-radius: 50%; background: var(--primary); color: #fff; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .step-body h4 { font-size: 0.96rem; margin-bottom: 4px; }
+    .step-body p { font-size: 0.88rem; color: var(--muted); line-height: 1.5; }
+
+    .member-card { margin-top: 18px; border: 1px solid var(--border); border-radius: var(--radius); padding: 18px; background: #f8fafc; display: none; }
+    .member-card.show { display: block; }
+    .member-header { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 10px; border-bottom: 1px solid var(--border); padding-bottom: 12px; margin-bottom: 14px; }
+    .member-name { font-size: 1.25rem; font-weight: 700; }
+    .member-meta { color: var(--muted); font-size: 0.9rem; margin-top: 4px; }
+
+    .benefit-banner { padding: 14px 16px; border-radius: 10px; margin-bottom: 16px; }
+    .benefit-banner.first-timer { background: var(--gold-soft); border: 1px solid #fcd34d; color: #92400e; }
+    .benefit-banner.continuing { background: var(--primary-soft); border: 1px solid #5eead4; color: #115e59; }
+    .benefit-title { font-size: 1.02rem; font-weight: 700; }
+    .benefit-sub { font-size: 0.86rem; margin-top: 3px; }
+
+    .calc-box { background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 16px; margin-bottom: 16px; }
+    .calc-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 12px; text-align: center; }
+    .calc-item { background: #f8fafc; padding: 10px; border-radius: 8px; }
+    .calc-label { font-size: 0.74rem; color: var(--muted); text-transform: uppercase; }
+    .calc-value { font-size: 1.15rem; font-weight: 700; margin-top: 4px; }
+    .calc-value.discount { color: var(--primary); }
+    .calc-value.net { color: var(--green); }
+
+    .report-summary-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin-bottom: 18px; }
+    .summary-box { background: #f8fafc; border: 1px solid var(--border); border-radius: 10px; padding: 14px; }
+    .summary-box-header { font-size: 0.8rem; font-weight: 700; color: var(--muted); text-transform: uppercase; margin-bottom: 10px; }
+    .summary-numbers { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; text-align: center; }
+    .summary-cell { background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 9px 4px; }
+    .summary-val { font-size: 1.12rem; font-weight: 700; }
+    .val-new { color: var(--gold); }
+    .val-return { color: var(--primary); }
+    .val-total { color: var(--accent); }
+    .val-rev { color: var(--green); }
+    .summary-lbl { font-size: 0.72rem; color: var(--muted); margin-top: 2px; }
+
+    .controls-bar { display: flex; gap: 10px; margin-bottom: 12px; flex-wrap: wrap; align-items: center; }
+    .controls-bar input[type="text"] { flex: 1; min-width: 190px; }
+    .controls-bar input[type="month"] { width: auto; min-width: 170px; }
+    .checkbox-inline { display: inline-flex; align-items: center; gap: 6px; font-size: 0.88rem; font-weight: 600; color: #334155; margin-bottom: 0; cursor: pointer; }
+
+    .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; border: 1px solid var(--border); border-radius: 10px; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.86rem; }
+    th, td { text-align: left; padding: 10px; border-bottom: 1px solid var(--border); }
+    th { background: #f8fafc; color: var(--muted); font-weight: 600; font-size: 0.76rem; text-transform: uppercase; }
+    tbody tr:last-child td { border-bottom: none; }
+    tfoot td { background: #f1f5f9; font-weight: 700; border-top: 2px solid var(--border); }
+    .clickable-row { cursor: pointer; }
+    .clickable-row:hover { background: #f8fafc; }
+    .clickable-row.selected-month { background: #f0fdfa; }
+    .num-col { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+    .badge { display: inline-block; padding: 3px 9px; border-radius: 999px; font-size: 0.75rem; font-weight: 600; white-space: nowrap; }
+    .badge-first { background: var(--gold-soft); color: var(--gold); }
+    .badge-cont { background: var(--primary-soft); color: var(--primary); }
+
+    .settings-box { background: #f8fafc; border: 1px solid var(--border); border-radius: 10px; padding: 18px; margin-top: 20px; }
+    .hint-text { font-size: 0.84rem; color: var(--muted); line-height: 1.45; }
+
+    @media (max-width: 760px) {
+      .form-grid, .report-summary-grid, .calc-grid { grid-template-columns: 1fr; }
+      .summary-numbers { grid-template-columns: repeat(2, 1fr); }
+      .row { flex-direction: column; align-items: stretch; }
+      .card { padding: 18px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- =========================================================
+       LOCK SCREEN GATE — ZERO DATA LOADED UNTIL AUTHENTICATED
+       ========================================================= -->
+  <div id="login-view" class="login-shell">
+    <div class="login-top">
+      <span class="lock-badge" data-i18n="badgeLocked">Authorized Access Only</span>
+      <div class="lang-toggle">
+        <button type="button" class="lang-btn lang-en-btn" onclick="setLanguage('en')">EN</button>
+        <button type="button" class="lang-btn lang-zh-btn" onclick="setLanguage('zh')">中文</button>
+      </div>
+    </div>
+
+    <h1 data-i18n="appTitle">Health Benefits</h1>
+    <p class="sub" data-i18n="loginSubtitle">Sign in with your authorized staff account. Customer records stay private in Google Sheets and clear automatically on sign-out.</p>
+
+    <button type="button" class="server-toggle" id="toggle-server-btn" onclick="toggleServerConfig()"></button>
+
+    <form id="login-form">
+      <div id="server-config-box" class="server-config-box">
+        <div class="form-group">
+          <label for="login-url" data-i18n="fieldSyncUrl">Google Apps Script Web App URL (/exec)</label>
+          <input type="url" id="login-url" placeholder="https://script.google.com/macros/s/.../exec" required />
+        </div>
+        <div class="form-group" style="margin-bottom:0;">
+          <label for="login-key" data-i18n="fieldWorkspaceKey">Workspace Secret Key (Settings B6)</label>
+          <input type="password" id="login-key" placeholder="HB-XXXXXXXXXXXXXXXX" required />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="login-username" data-i18n="fieldUsername">Staff Username</label>
+        <input type="text" id="login-username" autocomplete="username" placeholder="admin / frontdesk1" required />
+      </div>
+      <div class="form-group">
+        <label for="login-passcode" data-i18n="fieldPasscode">Personal Passcode</label>
+        <input type="password" id="login-passcode" autocomplete="current-password" required />
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-full" id="login-submit-btn" data-i18n="btnSignIn">Sign In</button>
+    </form>
+
+    <div id="login-alert" class="alert"></div>
+  </div>
+
+  <!-- =========================================================
+       MAIN AUTHENTICATED APPLICATION (EMPTY UNTIL SIGNED IN)
+       ========================================================= -->
+  <div id="app-view" class="container hidden">
+    <div class="top-bar">
+      <div class="user-cluster">
+        <span class="chip chip-slate" id="current-user-chip"></span>
+        <button type="button" class="chip chip-green" id="sync-status-btn" onclick="refreshFromCloud()"></button>
+        <button type="button" class="chip chip-red" onclick="signOut()" data-i18n="btnSignOut">Lock / Sign Out</button>
+      </div>
+      <div class="lang-toggle">
+        <button type="button" class="lang-btn lang-en-btn" onclick="setLanguage('en')">English</button>
+        <button type="button" class="lang-btn lang-zh-btn" onclick="setLanguage('zh')">中文</button>
+      </div>
+    </div>
+
+    <header>
+      <h1 data-i18n="appTitle">Health Benefits</h1>
+      <p data-i18n="appSubtitle">Healthcare Professional Registration, Service Records &amp; Auto Statistics</p>
+      <div class="promo-strip">
+        <span class="pill pill-first" id="header-pill-first"></span>
+        <span class="pill pill-continuing" id="header-pill-cont"></span>
+      </div>
+    </header>
+
+    <div class="today-bar">
+      <div class="today-bar-title" id="today-date-label"></div>
+      <div class="today-metrics">
+        <span class="today-metric"><span class="dot dot-new"></span><span data-i18n="lblNew">New</span>: <strong id="bar-today-new">0</strong></span>
+        <span class="today-metric"><span class="dot dot-return"></span><span data-i18n="lblReturn">Return</span>: <strong id="bar-today-return">0</strong></span>
+        <span class="today-metric"><span class="dot dot-total"></span><span data-i18n="lblTotal">Total</span>: <strong id="bar-today-total">0</strong></span>
+        <span class="today-metric admin-only"><span class="dot dot-rev"></span><span data-i18n="lblRevenue">Revenue</span>: <strong id="bar-today-rev">$0.00</strong></span>
+      </div>
+    </div>
+
+    <div class="tabs">
+      <button class="tab-btn" data-tab="guide" onclick="switchTab('guide')" data-i18n="tabGuide">1. Guide</button>
+      <button class="tab-btn" data-tab="register" onclick="switchTab('register')" data-i18n="tabRegister">2. Member Reg</button>
+      <button class="tab-btn active" data-tab="records" onclick="switchTab('records')" data-i18n="tabRecords">3. Check-In</button>
+      <button class="tab-btn admin-only" data-tab="stats" onclick="switchTab('stats')" data-i18n="tabStats">4. Auto Stats</button>
+      <button class="tab-btn admin-only" data-tab="settings" onclick="switchTab('settings')" data-i18n="tabSettings">5. Settings</button>
+    </div>
+
+    <!-- TAB 1: GUIDE -->
+    <section id="panel-guide" class="card panel">
+      <h2 data-i18n="guideHeading">Front Desk Operating Steps</h2>
+      <p class="hint-text" data-i18n="guideSub"></p>
+      <div class="guide-list" id="guide-steps-container"></div>
+    </section>
+
+    <!-- TAB 2: MEMBER REGISTRATION -->
+    <section id="panel-register" class="card panel">
+      <h2 data-i18n="regHeading">Customer Registration</h2>
+      <form id="register-form">
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="reg-name" data-i18n="fieldName">Full Name</label>
+            <input type="text" id="reg-name" data-i18n-ph="phName" required />
+          </div>
+          <div class="form-group">
+            <label for="reg-phone" data-i18n="fieldPhone">Cell Phone Number</label>
+            <input type="tel" id="reg-phone" placeholder="(408) 555-1234" required />
+          </div>
+          <div class="form-group">
+            <label for="reg-workplace" data-i18n="fieldHospital">Hospital / Clinic / Workplace</label>
+            <input type="text" id="reg-workplace" list="hospital-suggestions" data-i18n-ph="phHospital" required />
+            <datalist id="hospital-suggestions">
+              <option value="Kaiser Permanente Santa Clara"></option>
+              <option value="Santa Clara Valley Medical Center"></option>
+              <option value="Stanford Health Care"></option>
+              <option value="El Camino Health"></option>
+              <option value="Good Samaritan Hospital"></option>
+              <option value="O'Connor Hospital"></option>
+              <option value="Regional Medical Center"></option>
+            </datalist>
+          </div>
+          <div class="form-group">
+            <label for="reg-source" data-i18n="fieldSource">Promo / Marketing Source</label>
+            <input type="text" id="reg-source" list="source-suggestions" data-i18n-ph="phSource" required />
+            <datalist id="source-suggestions">
+              <option value="Nurse Association (RNPA)"></option>
+              <option value="Hospital Flyer / Poster"></option>
+              <option value="Colleague Referral"></option>
+              <option value="HR / Benefits Portal"></option>
+              <option value="Walk-In"></option>
+              <option value="Google / Yelp"></option>
+              <option value="WeChat / Social Media"></option>
+            </datalist>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary btn-full" id="reg-submit-btn"></button>
+      </form>
+      <div id="register-alert" class="alert"></div>
+
+      <hr class="section-divider" />
+
+      <h3 data-i18n="dirHeading">Registered Members Directory</h3>
+      <div class="controls-bar">
+        <input type="text" id="dir-search" data-i18n-ph="phDirSearch" oninput="renderDirectory()" />
+        <button type="button" class="btn btn-secondary admin-only" onclick="exportMembersCSV()" data-i18n="btnExportMembers">Export CSV</button>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th data-i18n="colName">Name</th>
+              <th data-i18n="colPhone">Cell Phone</th>
+              <th data-i18n="colHospital">Hospital</th>
+              <th data-i18n="colSource">Promo Source</th>
+              <th data-i18n="colNextBenefit">Next Benefit</th>
+              <th class="num-col" data-i18n="colVisits">Visits</th>
+              <th data-i18n="colAction">Action</th>
+            </tr>
+          </thead>
+          <tbody id="dir-body"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- TAB 3: CHECK-IN & SERVICE RECORDS -->
+    <section id="panel-records" class="card panel active">
+      <h2 data-i18n="recHeading">Member Check-In &amp; Service Record</h2>
+      <form id="signin-form">
+        <div class="form-group">
+          <label for="signin-phone" data-i18n="fieldLookup">Look Up by Cell Phone Number</label>
+          <div class="row">
+            <input type="tel" id="signin-phone" placeholder="(408) 555-1234" required autocomplete="off" />
+            <button type="submit" class="btn btn-primary" data-i18n="btnLookup">Look Up</button>
+          </div>
+        </div>
+      </form>
+      <div id="signin-alert" class="alert"></div>
+
+      <div id="member-card" class="member-card">
+        <div class="member-header">
+          <div>
+            <div class="member-name" id="mc-name"></div>
+            <div class="member-meta" id="mc-meta"></div>
+          </div>
+          <div class="pill pill-continuing" id="mc-visits"></div>
+        </div>
+
+        <div id="mc-benefit-banner" class="benefit-banner">
+          <div class="benefit-title" id="mc-benefit-title"></div>
+          <div class="benefit-sub" id="mc-benefit-sub"></div>
+        </div>
+
+        <form id="checkout-form">
+          <div class="calc-box">
+            <div class="form-grid">
+              <div class="form-group" style="margin-bottom:0;">
+                <label for="service-name" data-i18n="fieldService">Service Performed</label>
+                <input type="text" id="service-name" list="service-suggestions" data-i18n-ph="phService" required />
+                <datalist id="service-suggestions">
+                  <option value="60-Min Foot Reflexology / 60分钟足疗"></option>
+                  <option value="60-Min Full Body Massage / 60分钟全身按摩"></option>
+                  <option value="90-Min Foot & Body Combo / 90分钟足身套餐"></option>
+                  <option value="Head Spa / Hair Treatment / 头部理疗"></option>
+                  <option value="Haircut & Styling / 剪发造型"></option>
+                </datalist>
+              </div>
+              <div class="form-group" style="margin-bottom:0;">
+                <label for="service-subtotal" data-i18n="fieldPrice">Original Service Price ($)</label>
+                <input type="number" id="service-subtotal" min="0" step="0.01" placeholder="65.00" required oninput="updateCalculator()" />
+              </div>
+            </div>
+            <div class="calc-grid">
+              <div class="calc-item"><div class="calc-label" data-i18n="calcOrig">Original</div><div class="calc-value" id="calc-sub">$0.00</div></div>
+              <div class="calc-item"><div class="calc-label" data-i18n="calcDisc">Discount</div><div class="calc-value discount" id="calc-disc">-$0.00</div></div>
+              <div class="calc-item"><div class="calc-label" data-i18n="calcNet">Net Received</div><div class="calc-value net" id="calc-final">$0.00</div></div>
+            </div>
+          </div>
+
+          <div class="row">
+            <button type="submit" class="btn btn-primary btn-full" id="checkin-submit-btn" data-i18n="btnRecordVisit">Record Visit &amp; Apply Benefit</button>
+            <button type="button" class="btn btn-secondary" onclick="clearSignIn()" data-i18n="btnClear">Clear</button>
+          </div>
+        </form>
+      </div>
+
+      <hr class="section-divider" />
+
+      <h3 id="tx-list-heading" data-i18n="txHeading">Service Records</h3>
+      <div class="controls-bar">
+        <input type="text" id="tx-search" data-i18n-ph="phTxSearch" oninput="renderTransactions()" />
+        <input type="month" id="tx-month-filter" class="admin-only" onchange="renderTransactions()" />
+        <label class="checkbox-inline admin-only">
+          <input type="checkbox" id="tx-show-all" checked onchange="renderTransactions()" />
+          <span data-i18n="lblAllMonths">All months</span>
+        </label>
+        <button type="button" class="btn btn-secondary admin-only" onclick="exportTransactionsCSV()" data-i18n="btnExportTx">Export CSV</button>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th data-i18n="colDate">Date</th>
+              <th data-i18n="colGuest">Guest</th>
+              <th data-i18n="colHospital">Hospital</th>
+              <th data-i18n="colType">Type</th>
+              <th data-i18n="colService">Service</th>
+              <th class="num-col" data-i18n="colOrig">Original</th>
+              <th class="num-col" data-i18n="colDisc">Discount</th>
+              <th class="num-col" data-i18n="colNet">Received</th>
+              <th data-i18n="colStaff">Staff</th>
+              <th class="admin-only" data-i18n="colAction">Action</th>
+            </tr>
+          </thead>
+          <tbody id="tx-body"></tbody>
+          <tfoot id="tx-foot"></tfoot>
+        </table>
+      </div>
+    </section>
+
+    <!-- TAB 4: AUTO STATISTICS (ADMIN ONLY) -->
+    <section id="panel-stats" class="card panel admin-only">
+      <h2 data-i18n="statsHeading">Automated Usage, Revenue &amp; Hospital Analytics</h2>
+
+      <div class="report-summary-grid">
+        <div class="summary-box">
+          <div class="summary-box-header" id="rep-today-heading"></div>
+          <div class="summary-numbers">
+            <div class="summary-cell"><div class="summary-val val-new" id="rep-today-new">0</div><div class="summary-lbl" data-i18n="lblNewGuests">New Guests</div></div>
+            <div class="summary-cell"><div class="summary-val val-return" id="rep-today-return">0</div><div class="summary-lbl" data-i18n="lblReturnGuests">Return</div></div>
+            <div class="summary-cell"><div class="summary-val val-total" id="rep-today-total">0</div><div class="summary-lbl" data-i18n="lblTotalVisits">Total</div></div>
+            <div class="summary-cell"><div class="summary-val val-rev" id="rep-today-rev">$0</div><div class="summary-lbl" data-i18n="lblRevenue">Revenue</div></div>
+          </div>
+        </div>
+        <div class="summary-box">
+          <div class="summary-box-header" id="rep-month-heading"></div>
+          <div class="summary-numbers">
+            <div class="summary-cell"><div class="summary-val val-new" id="rep-month-new">0</div><div class="summary-lbl" data-i18n="lblNewGuests">New Guests</div></div>
+            <div class="summary-cell"><div class="summary-val val-return" id="rep-month-return">0</div><div class="summary-lbl" data-i18n="lblReturnGuests">Return</div></div>
+            <div class="summary-cell"><div class="summary-val val-total" id="rep-month-total">0</div><div class="summary-lbl" data-i18n="lblTotalVisits">Total</div></div>
+            <div class="summary-cell"><div class="summary-val val-rev" id="rep-month-rev">$0</div><div class="summary-lbl" data-i18n="lblRevenue">Revenue</div></div>
+          </div>
+        </div>
+      </div>
+
+      <h3 data-i18n="monthlyHeading">Monthly Summary</h3>
+      <div class="controls-bar" style="justify-content: space-between;">
+        <span class="hint-text" data-i18n="monthlyHint"></span>
+        <button type="button" class="btn btn-secondary" onclick="exportMonthlyCSV()" data-i18n="btnExportMonthly">Export Monthly CSV</button>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th data-i18n="colMonth">Month</th>
+              <th class="num-col" data-i18n="lblNewGuests">New Guests</th>
+              <th class="num-col" data-i18n="lblReturnGuests">Return</th>
+              <th class="num-col" data-i18n="lblTotalVisits">Total</th>
+              <th class="num-col" data-i18n="colUnique">Unique</th>
+              <th class="num-col" data-i18n="colDisc">Discounts</th>
+              <th class="num-col" data-i18n="colNetRev">Net Revenue</th>
+            </tr>
+          </thead>
+          <tbody id="monthly-report-body"></tbody>
+          <tfoot id="monthly-report-foot"></tfoot>
+        </table>
+      </div>
+
+      <h3 data-i18n="dailyHeading">Daily Breakdown</h3>
+      <div class="controls-bar">
+        <input type="month" id="report-month-filter" onchange="renderReports()" />
+        <label class="checkbox-inline">
+          <input type="checkbox" id="show-all-days" onchange="renderReports()" />
+          <span data-i18n="lblAllDates">Show all dates</span>
+        </label>
+        <button type="button" class="btn btn-secondary" onclick="exportDailyCSV()" data-i18n="btnExportDaily">Export Daily CSV</button>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th data-i18n="colDate">Date</th>
+              <th class="num-col" data-i18n="lblNewGuests">New Guests</th>
+              <th class="num-col" data-i18n="lblReturnGuests">Return</th>
+              <th class="num-col" data-i18n="lblTotalVisits">Total</th>
+              <th class="num-col" data-i18n="colDisc">Discounts</th>
+              <th class="num-col" data-i18n="colNetRev">Net Revenue</th>
+            </tr>
+          </thead>
+          <tbody id="daily-report-body"></tbody>
+          <tfoot id="daily-report-foot"></tfoot>
+        </table>
+      </div>
+
+      <h3 data-i18n="hospitalHeading">Hospital / Workplace Breakdown</h3>
+      <div class="controls-bar" style="justify-content: space-between;">
+        <span class="hint-text" data-i18n="hospitalHint"></span>
+        <button type="button" class="btn btn-secondary" onclick="exportHospitalCSV()" data-i18n="btnExportHospital">Export Hospital CSV</button>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th data-i18n="colHospital">Hospital</th>
+              <th class="num-col" data-i18n="colMembers">Members</th>
+              <th class="num-col" data-i18n="colNewVisits">New Visits</th>
+              <th class="num-col" data-i18n="colRetVisits">Return Visits</th>
+              <th class="num-col" data-i18n="lblTotalVisits">Total</th>
+              <th class="num-col" data-i18n="colNetRev">Net Revenue</th>
+            </tr>
+          </thead>
+          <tbody id="hospital-report-body"></tbody>
+          <tfoot id="hospital-report-foot"></tfoot>
+        </table>
+      </div>
+
+      <h3 data-i18n="sourceHeading">Promotional Source Breakdown</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th data-i18n="colSource">Promo Source</th>
+              <th class="num-col" data-i18n="colMembers">Members</th>
+              <th class="num-col" data-i18n="lblTotalVisits">Total</th>
+              <th class="num-col" data-i18n="colNetRev">Net Revenue</th>
+            </tr>
+          </thead>
+          <tbody id="source-report-body"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- TAB 5: PROMO & SECURITY SETTINGS (ADMIN ONLY) -->
+    <section id="panel-settings" class="card panel admin-only">
+      <h2 data-i18n="settingsHeading">Promo &amp; Security Controls (Admin Only)</h2>
+      <p class="hint-text" style="margin-bottom:14px;" data-i18n="settingsSub"></p>
+
+      <form id="settings-form">
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="set-first-dollar" data-i18n="fieldFirstDollar">First-Timer Flat Discount ($)</label>
+            <input type="number" id="set-first-dollar" min="0" step="0.50" required />
+          </div>
+          <div class="form-group">
+            <label for="set-return-pct" data-i18n="fieldReturnPct">Continuing Member Discount (%)</label>
+            <input type="number" id="set-return-pct" min="0" max="100" step="1" required />
+          </div>
+        </div>
+        <div class="row">
+          <button type="submit" class="btn btn-primary" data-i18n="btnSavePromo">Save Promo Settings</button>
+          <button type="button" class="btn btn-secondary" onclick="resetDefaultSettings()" data-i18n="btnResetPromo">Reset ($10 / 10%)</button>
+        </div>
+      </form>
+      <div id="settings-alert" class="alert"></div>
+
+      <div class="settings-box">
+        <h3 style="margin-top:0;" data-i18n="secManageHeading">Staff Access &amp; Emergency Session Lock</h3>
+        <p class="hint-text" style="margin-bottom:14px;" data-i18n="secManageSub"></p>
+        <div class="row" style="flex-wrap:wrap;">
+          <button type="button" class="btn btn-danger" onclick="revokeAllDevices()" data-i18n="btnRevokeAll">Force Sign Out All Devices</button>
+          <button type="button" class="btn btn-secondary" onclick="forgetSavedServerUrl()" data-i18n="btnForgetServer">Forget Saved Server URL on This Device</button>
+        </div>
+        <div id="sec-alert" class="alert"></div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    // Only non-sensitive UI config (language & endpoint URL) persists across sessions.
+    // Customer records, passcodes, and session tokens NEVER touch localStorage.
+    const LANG_KEY = "hb_secure_lang_v1";
+    const URL_KEY  = "hb_secure_url_v1";
+    const IDLE_LOCK_MS = 15 * 60 * 1000; // 15-minute auto-lock
+
+    let currentLang = localStorage.getItem(LANG_KEY) || "en";
+    let sessionState = {
+      token: null,
+      user: null,
+      settings: { firstTimeAmount: 10, continuingPercent: 10 },
+      members: {}
+    };
+    let currentMemberPhone = null;
+    let idleTimer = null;
+
+    const I18N = {
+      en: {
+        badgeLocked: "Authorized Access Only",
+        appTitle: "Health Benefits",
+        appSubtitle: "Private Healthcare Professional Check-In & Analytics",
+        loginSubtitle: "Sign in with your authorized staff credentials. All customer data stays private in Google Sheets and wipes from this device on sign-out.",
+        fieldSyncUrl: "Google Apps Script Web App URL (/exec)",
+        fieldWorkspaceKey: "Workspace Secret Key (Settings B6)",
+        fieldUsername: "Staff Username",
+        fieldPasscode: "Personal Passcode",
+        btnSignIn: "Sign In",
+        btnSignOut: "Lock / Sign Out",
+        showServerCfg: "▸ Change Server URL / Secret Key",
+        hideServerCfg: "▾ Hide Server URL / Secret Key",
+        lblNew: "New", lblReturn: "Return", lblTotal: "Total", lblRevenue: "Revenue",
+        lblNewGuests: "New Guests", lblReturnGuests: "Return", lblTotalVisits: "Total",
+        tabGuide: "1. Guide", tabRegister: "2. Member Reg", tabRecords: "3. Check-In",
+        tabStats: "4. Auto Stats", tabSettings: "5. Settings",
+        guideHeading: "Front Desk Operating Steps",
+        guideSub: "Every action is logged under your signed-in staff account. The screen auto-locks after 15 minutes of inactivity.",
+        guideSteps: [
+          ["Sign In with Personal Account", "Each employee uses their own username and passcode. Never share admin passcodes with front-desk tablets."],
+          ["Look Up by Cell Phone", "Open Tab 3 (Check-In) and enter the guest's 10-digit cell phone number to verify their eligible benefit."],
+          ["Register First-Time Guests", "If not registered, complete Name, Hospital, and Promo Source in Tab 2 (Member Reg)."],
+          ["Record Service & Original Price", "Enter the service and pre-discount price. Discounts calculate automatically and log under your staff name."],
+          ["Lock When Stepping Away", "Tap 'Lock / Sign Out' at shift end. Zero customer records remain stored on the iPad or iPhone."]
+        ],
+        regHeading: "Customer Registration",
+        fieldName: "Full Name", phName: "e.g. Sarah Chen, RN",
+        fieldPhone: "Cell Phone Number",
+        fieldHospital: "Hospital / Clinic / Workplace", phHospital: "e.g. Kaiser Permanente Santa Clara",
+        fieldSource: "Promo / Marketing Source", phSource: "e.g. RNPA Email, Hospital Flyer, Referral",
+        dirHeading: "Registered Members Directory",
+        phDirSearch: "Search by name, phone, hospital, or source...",
+        btnExportMembers: "Export CSV",
+        colName: "Name", colPhone: "Cell Phone", colHospital: "Hospital", colSource: "Promo Source",
+        colNextBenefit: "Next Benefit", colVisits: "Visits", colAction: "Action", colStaff: "Staff",
+        recHeading: "Member Check-In & Service Record",
+        fieldLookup: "Look Up by Cell Phone Number", btnLookup: "Look Up",
+        fieldService: "Service Performed", phService: "e.g. 60-Min Foot & Body Combo",
+        fieldPrice: "Original Service Price ($)",
+        calcOrig: "Original", calcDisc: "Discount", calcNet: "Net Received",
+        btnRecordVisit: "Record Visit & Apply Benefit", btnClear: "Clear",
+        txHeading: "Service Records", txHeadingToday: "Today's Service Records (Staff View)",
+        phTxSearch: "Filter by guest, hospital, or service...",
+        lblAllMonths: "All months", btnExportTx: "Export CSV",
+        colDate: "Date", colGuest: "Guest", colType: "Type", colService: "Service",
+        colOrig: "Original", colDisc: "Discount", colNet: "Received",
+        statsHeading: "Automated Usage, Revenue & Hospital Analytics",
+        monthlyHeading: "Monthly Summary", monthlyHint: "Tap any month row to filter Daily Breakdown.",
+        btnExportMonthly: "Export Monthly CSV", colMonth: "Month", colUnique: "Unique", colNetRev: "Net Revenue",
+        dailyHeading: "Daily Breakdown", lblAllDates: "Show all dates", btnExportDaily: "Export Daily CSV",
+        hospitalHeading: "Hospital / Workplace Breakdown", hospitalHint: "Registrations, visits, and revenue by workplace.",
+        btnExportHospital: "Export Hospital CSV", colMembers: "Members", colNewVisits: "New Visits", colRetVisits: "Return Visits",
+        sourceHeading: "Promotional Source Breakdown",
+        settingsHeading: "Promo & Security Controls (Admin Only)",
+        settingsSub: "Changes apply immediately across all connected devices.",
+        fieldFirstDollar: "First-Timer Flat Discount ($)", fieldReturnPct: "Continuing Member Discount (%)",
+        btnSavePromo: "Save Promo Settings", btnResetPromo: "Reset ($10 / 10%)",
+        secManageHeading: "Staff Access & Emergency Session Lock",
+        secManageSub: "Add or disable individual employees in the '授权人员 Staff' tab of your private Google Sheet (change Active to NO). Use the button below to immediately sign out every open iPhone, iPad, or computer.",
+        btnRevokeAll: "Force Sign Out All Devices",
+        btnForgetServer: "Forget Saved Server URL on This Device",
+        syncConnected: "Synced (Tap to refresh)", syncing: "Syncing...",
+        todayLabel: "Today", newGuestBadge: "New Guest", returnGuestBadge: "Return",
+        btnCheckIn: "Check In", btnUndo: "Undo",
+        noMembers: "No registered members found.", noRecords: "No service records found.", noData: "No data yet.",
+        invalidPhone: "Please enter a valid 10-digit cell phone number.",
+        notFoundRedirect: "No member found for {phone}. Opening Registration...",
+        alreadyReg: "{name} is already registered with {phone}.",
+        regSuccess: "Registered {name}! Enter today's service & price below.",
+        recordedSuccess: "Recorded \"{service}\" for {name}. Net received: {net}.",
+        confirmUndo: "Delete this service record?",
+        confirmRevoke: "Sign out ALL active devices immediately? Everyone (including you) will need to log in again.",
+        promoSaved: "Promo settings saved: {first} off first visit, {pct}% off returning visits.",
+        promoReset: "Reset to defaults ($10 / 10%).",
+        idleLocked: "Signed out automatically after 15 minutes of inactivity.",
+        roleAdmin: "Admin", roleStaff: "Staff"
+      },
+      zh: {
+        badgeLocked: "仅限授权员工登录",
+        appTitle: "Health Benefits 医护优惠系统",
+        appSubtitle: "私密权限版 — 登记、结账与自动统计",
+        loginSubtitle: "请使用授权员工账号与密码登录。所有客户数据仅存于您的私密 Google Sheet，退出后本机不留任何客户信息。",
+        fieldSyncUrl: "Google Apps Script Web App 网址 (/exec)",
+        fieldWorkspaceKey: "系统访问密钥 (表格设置页 B6)",
+        fieldUsername: "员工账号",
+        fieldPasscode: "个人密码",
+        btnSignIn: "安全登录",
+        btnSignOut: "锁定 / 退出",
+        showServerCfg: "▸ 修改服务器网址 / 访问密钥",
+        hideServerCfg: "▾ 收起服务器网址 / 访问密钥",
+        lblNew: "新客", lblReturn: "回头客", lblTotal: "总计", lblRevenue: "营业额",
+        lblNewGuests: "新客", lblReturnGuests: "回头客", lblTotalVisits: "总人次",
+        tabGuide: "1. 使用说明", tabRegister: "2. 客户登记", tabRecords: "3. 消费记录",
+        tabStats: "4. 自动统计", tabSettings: "5. 优惠与安全",
+        guideHeading: "前台安全操作步骤",
+        guideSub: "每条记录均会自动标记操作员工账号；15分钟无操作将自动锁定清屏。",
+        guideSteps: [
+          ["使用个人账号登录", "每位员工使用独立账号密码，切勿将店长 Admin 密码交给普通前台设备。"],
+          ["输入手机号查询", "在“3. 消费记录”输入10位手机号，立即确认新客或回头客优惠资格。"],
+          ["新客首次登记", "未登记客户自动跳转至“2. 客户登记”，填好姓名、医院与宣传来源。"],
+          ["登记服务与自动算价", "输入服务项目与原价，系统自动算折并记录操作员工姓名。"],
+          ["离开时一键锁定", "交班或离开前点右上角“锁定 / 退出”，iPad/iPhone 本地不留存任何客户隐私数据。"]
+        ],
+        regHeading: "客户登记",
+        fieldName: "客户姓名", phName: "例如：Sarah Chen, RN",
+        fieldPhone: "手机号码 (10位)",
+        fieldHospital: "医院 / 诊所 / 工作单位", phHospital: "例如：Kaiser Permanente Santa Clara",
+        fieldSource: "宣传来源", phSource: "例如：护士协会、医院传单、同事推荐",
+        dirHeading: "已登记客户列表",
+        phDirSearch: "搜索姓名、手机号、医院或宣传来源...",
+        btnExportMembers: "导出客户 CSV",
+        colName: "姓名", colPhone: "手机号", colHospital: "医院 / 单位", colSource: "宣传来源",
+        colNextBenefit: "下次优惠", colVisits: "次数", colAction: "操作", colStaff: "操作员",
+        recHeading: "客户签到与消费记录",
+        fieldLookup: "输入手机号查询客户", btnLookup: "查询",
+        fieldService: "服务项目", phService: "例如：60分钟足疗 / 全身按摩",
+        fieldPrice: "服务原价 ($)",
+        calcOrig: "原价", calcDisc: "优惠折扣", calcNet: "实收金额",
+        btnRecordVisit: "确认结账并记录本次优惠", btnClear: "清空",
+        txHeading: "消费记录明细", txHeadingToday: "今日消费记录（前台视图）",
+        phTxSearch: "按姓名、医院或服务筛选...",
+        lblAllMonths: "显示全部月份", btnExportTx: "导出消费 CSV",
+        colDate: "日期", colGuest: "客户", colType: "类型", colService: "服务项目",
+        colOrig: "原价", colDisc: "折扣", colNet: "实收",
+        statsHeading: "自动统计（每日、每月、营业额、医院来源）",
+        monthlyHeading: "每月汇总", monthlyHint: "点击任意月份行可筛选下方每日明细。",
+        btnExportMonthly: "导出月报 CSV", colMonth: "月份", colUnique: "独立客户", colNetRev: "实收营业额",
+        dailyHeading: "每日使用统计", lblAllDates: "显示全部日期", btnExportDaily: "导出日报 CSV",
+        hospitalHeading: "医院 / 单位来源统计", hospitalHint: "各医院登记人数、新客/回头客及实收营业额。",
+        btnExportHospital: "导出医院 CSV", colMembers: "登记人数", colNewVisits: "新客次数", colRetVisits: "回头客次数",
+        sourceHeading: "宣传来源效果统计",
+        settingsHeading: "优惠设置与安全管控（仅店长可见）",
+        settingsSub: "保存后所有在线设备立即生效。",
+        fieldFirstDollar: "首次新客立减金额 ($)", fieldReturnPct: "后续回头客折扣 (%)",
+        btnSavePromo: "保存优惠设置", btnResetPromo: "恢复默认 ($10 / 10%)",
+        secManageHeading: "员工授权管理与一键全员下线",
+        secManageSub: "请在私密 Google Sheet 的“授权人员 Staff”工作表中增删员工或将状态改为 NO。点击下方红色按钮可立即强制所有已登录的 iPhone/iPad/电脑下线。",
+        btnRevokeAll: "强制所有设备立即下线",
+        btnForgetServer: "清除本机记住的服务器网址",
+        syncConnected: "已安全同步（点击刷新）", syncing: "同步中...",
+        todayLabel: "今日", newGuestBadge: "新客", returnGuestBadge: "回头客",
+        btnCheckIn: "去结账", btnUndo: "撤销",
+        noMembers: "暂无已登记客户。", noRecords: "暂无消费记录。", noData: "暂无数据。",
+        invalidPhone: "请输入有效的10位手机号码。",
+        notFoundRedirect: "未找到手机号 {phone}，正在跳转到新客户登记...",
+        alreadyReg: "{name}（{phone}）已经登记过。",
+        regSuccess: "已登记 {name}！请在下方输入本次服务与原价。",
+        recordedSuccess: "已记录 {name} 的“{service}”，实收 {net}。",
+        confirmUndo: "确定删除这条消费记录吗？",
+        confirmRevoke: "确定强制所有设备立即退出登录吗？所有员工（包括您自己）都需要重新输入密码登录。",
+        promoSaved: "优惠设置已保存：首次立减 {first}，后续 {pct}% 折扣。",
+        promoReset: "已恢复默认（$10 / 10%）。",
+        idleLocked: "超过15分钟无操作，系统已自动锁定退出。",
+        roleAdmin: "店长", roleStaff: "前台"
+      }
+    };
+
+    function t(key, vars = {}) {
+      let s = (I18N[currentLang] && I18N[currentLang][key]) || I18N.en[key] || key;
+      Object.entries(vars).forEach(([k, v]) => { s = s.replace(`{${k}}`, v); });
+      return s;
+    }
+
+    function escapeHTML(str) {
+      return String(str ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+    }
+    function money(val) { return `$${(Number(val) || 0).toFixed(2)}`; }
+    function formatShortMoney(val) { const n = Number(val) || 0; return Number.isInteger(n) ? `$${n}` : `$${n.toFixed(2)}`; }
+    function normalizePhone(raw) {
+      let d = String(raw || "").replace(/\D/g, "");
+      if (d.length === 11 && d.startsWith("1")) d = d.slice(1);
+      return d;
+    }
+    function formatPhone(d) { return d.length === 10 ? `(${d.slice(0,3)}) ${d.slice(3,6)}-${d.slice(6)}` : d; }
+    function getLocalDateKey(input) {
+      if (typeof input === "string" && /^\d{4}-\d{2}-\d{2}$/.test(input)) return input;
+      const d = input ? new Date(input) : new Date();
+      return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+    }
+    function getLocalMonthKey(input) { return getLocalDateKey(input).slice(0, 7); }
+    function formatDateLabel(dk) {
+      const [y, m, d] = dk.split("-").map(Number);
+      return new Date(y, m - 1, d).toLocaleDateString(currentLang === "zh" ? "zh-CN" : undefined, { weekday: "short", year: "numeric", month: "short", day: "numeric" });
+    }
+    function formatMonthLabel(mk) {
+      const [y, m] = mk.split("-").map(Number);
+      return new Date(y, m - 1, 1).toLocaleDateString(currentLang === "zh" ? "zh-CN" : undefined, { year: "numeric", month: "long" });
+    }
+    function showAlert(id, msg, type) {
+      const el = document.getElementById(id);
+      el.textContent = msg;
+      el.className = `alert show alert-${type}`;
+    }
+    function hideAlert(id) {
+      const el = document.getElementById(id);
+      el.className = "alert";
+      el.textContent = "";
+    }
+
+    // --- Idle Auto-Lock Timer ---
+    function resetIdleTimer() {
+      if (idleTimer) clearTimeout(idleTimer);
+      if (sessionState.token) {
+        idleTimer = setTimeout(() => {
+          signOut(t("idleLocked"));
+        }, IDLE_LOCK_MS);
+      }
+    }
+    ["click", "keydown", "touchstart", "input"].forEach(ev => {
+      document.addEventListener(ev, resetIdleTimer, { passive: true });
+    });
+
+    // --- Server Config Box Toggle on Login Screen ---
+    function updateServerToggleUI() {
+      const box = document.getElementById("server-config-box");
+      const btn = document.getElementById("toggle-server-btn");
+      btn.textContent = box.classList.contains("hidden") ? t("showServerCfg") : t("hideServerCfg");
+    }
+    function toggleServerConfig() {
+      document.getElementById("server-config-box").classList.toggle("hidden");
+      updateServerToggleUI();
+    }
+
+    // --- Language Switching ---
+    function setLanguage(lang) {
+      currentLang = lang === "zh" ? "zh" : "en";
+      localStorage.setItem(LANG_KEY, currentLang);
+      document.documentElement.lang = currentLang === "zh" ? "zh-CN" : "en";
+      document.querySelectorAll(".lang-en-btn").forEach(b => b.classList.toggle("active", currentLang === "en"));
+      document.querySelectorAll(".lang-zh-btn").forEach(b => b.classList.toggle("active", currentLang === "zh"));
+
+      document.querySelectorAll("[data-i18n]").forEach(el => { el.textContent = t(el.dataset.i18n); });
+      document.querySelectorAll("[data-i18n-ph]").forEach(el => { el.placeholder = t(el.dataset.i18nPh); });
+      updateServerToggleUI();
+
+      if (sessionState.token) {
+        renderAllAuthenticatedViews();
+      }
+    }
+
+    // --- Secure API Helper (POST Only) ---
+    function getServerUrl() {
+      return (document.getElementById("login-url").value || localStorage.getItem(URL_KEY) || "").trim();
+    }
+
+    async function apiCall(payload) {
+      const url = getServerUrl();
+      if (!url) throw new Error("Missing Google Apps Script Web App URL.");
+
+      const syncBtn = document.getElementById("sync-status-btn");
+      if (syncBtn && sessionState.token) syncBtn.textContent = "↻ " + t("syncing");
+
+      const res = await fetch(url, {
+        method: "POST",
+        redirect: "follow",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify({ ...payload, token: sessionState.token || undefined })
+      });
+      const data = await res.json();
+      if (!data.ok) {
+        if (data.authExpired) {
+          signOut(data.error);
+        }
+        throw new Error(data.error || "Request failed");
+      }
+      if (syncBtn && sessionState.token) syncBtn.textContent = "● " + t("syncConnected");
+      return data;
+    }
+
+    function applySnapshot(data) {
+      if (data.user) sessionState.user = data.user;
+      if (data.settings) sessionState.settings = data.settings;
+      if (data.members) sessionState.members = data.members;
+      renderAllAuthenticatedViews();
+    }
+
+    // --- Login & Sign-Out ---
+    document.getElementById("login-form").addEventListener("submit", async function (e) {
+      e.preventDefault();
+      hideAlert("login-alert");
+
+      const url = document.getElementById("login-url").value.trim();
+      const workspaceKey = document.getElementById("login-key").value.trim();
+      const username = document.getElementById("login-username").value.trim();
+      const passcode = document.getElementById("login-passcode").value.trim();
+
+      const btn = document.getElementById("login-submit-btn");
+      btn.disabled = true;
+
+      try {
+        localStorage.setItem(URL_KEY, url);
+        const data = await apiCall({ action: "login", workspaceKey, username, passcode });
+        sessionState.token = data.token;
+        // Clear passcode input immediately from DOM
+        document.getElementById("login-passcode").value = "";
+        applySnapshot(data);
+
+        document.getElementById("login-view").classList.add("hidden");
+        document.getElementById("app-view").classList.remove("hidden");
+        switchTab("records");
+        resetIdleTimer();
+      } catch (err) {
+        showAlert("login-alert", err.message, "error");
+      } finally {
+        btn.disabled = false;
+      }
+    });
+
+    async function signOut(reasonMsg) {
+      const oldToken = sessionState.token;
+      if (idleTimer) clearTimeout(idleTimer);
+
+      // Wipe all sensitive state from memory immediately
+      sessionState = { token: null, user: null, settings: { firstTimeAmount: 10, continuingPercent: 10 }, members: {} };
+      currentMemberPhone = null;
+      clearSignIn();
+      document.getElementById("dir-body").innerHTML = "";
+      document.getElementById("tx-body").innerHTML = "";
+      document.getElementById("monthly-report-body").innerHTML = "";
+      document.getElementById("daily-report-body").innerHTML = "";
+      document.getElementById("hospital-report-body").innerHTML = "";
+      document.getElementById("source-report-body").innerHTML = "";
+
+      document.getElementById("app-view").classList.add("hidden");
+      document.getElementById("login-view").classList.remove("hidden");
+      if (reasonMsg) showAlert("login-alert", reasonMsg, "info");
+
+      if (oldToken && getServerUrl()) {
+        try {
+          await fetch(getServerUrl(), {
+            method: "POST",
+            redirect: "follow",
+            headers: { "Content-Type": "text/plain;charset=utf-8" },
+            body: JSON.stringify({ action: "logout", token: oldToken })
+          });
+        } catch {}
+      }
+    }
+
+    async function refreshFromCloud() {
+      try {
+        const data = await apiCall({ action: "getAll" });
+        applySnapshot(data);
+      } catch (err) {
+        alert(err.message);
+      }
+    }
+
+    function isAdmin() {
+      return sessionState.user && sessionState.user.role === "admin";
+    }
+
+    function renderAllAuthenticatedViews() {
+      const admin = isAdmin();
+      document.querySelectorAll(".admin-only").forEach(el => {
+        el.classList.toggle("hidden", !admin);
+      });
+
+      const roleLabel = admin ? t("roleAdmin") : t("roleStaff");
+      document.getElementById("current-user-chip").textContent = `${sessionState.user.displayName} (${roleLabel})`;
+      document.getElementById("sync-status-btn").textContent = "● " + t("syncConnected");
+      document.getElementById("tx-list-heading").textContent = admin ? t("txHeading") : t("txHeadingToday");
+
+      const s = sessionState.settings;
+      const firstStr = formatShortMoney(s.firstTimeAmount);
+      document.getElementById("header-pill-first").textContent = currentLang === "zh"
+        ? `新客首单：立减 ${firstStr}` : `New Guest: ${firstStr} Off First Visit`;
+      document.getElementById("header-pill-cont").textContent = currentLang === "zh"
+        ? `回头客：持续 ${s.continuingPercent}% 折扣` : `Return Guest: ${s.continuingPercent}% Off Continuing`;
+      document.getElementById("reg-submit-btn").textContent = currentLang === "zh"
+        ? `完成登记并解锁首单立减 ${firstStr}` : `Register & Unlock ${firstStr} Off First Visit`;
+      document.getElementById("set-first-dollar").value = s.firstTimeAmount;
+      document.getElementById("set-return-pct").value = s.continuingPercent;
+
+      renderGuide();
+      updateTodayBar();
+      renderDirectory();
+      renderTransactions();
+      if (admin) renderReports();
+      if (currentMemberPhone && sessionState.members[currentMemberPhone]) {
+        loadMemberCard(sessionState.members[currentMemberPhone]);
+      }
+    }
+
+    function renderGuide() {
+      const steps = I18N[currentLang].guideSteps;
+      document.getElementById("guide-steps-container").innerHTML = steps.map((item, i) => `
+        <div class="guide-step">
+          <div class="step-num">${i + 1}</div>
+          <div class="step-body"><h4>${escapeHTML(item[0])}</h4><p>${escapeHTML(item[1])}</p></div>
+        </div>
+      `).join("");
+    }
+
+    function switchTab(tabName) {
+      if ((tabName === "stats" || tabName === "settings") && !isAdmin()) return;
+      document.querySelectorAll(".tab-btn").forEach(btn => btn.classList.toggle("active", btn.dataset.tab === tabName));
+      document.querySelectorAll(".panel").forEach(p => p.classList.remove("active"));
+      document.getElementById(`panel-${tabName}`).classList.add("active");
+      if (tabName === "register") renderDirectory();
+      if (tabName === "records") renderTransactions();
+      if (tabName === "stats" && isAdmin()) renderReports();
+    }
+
+    // --- Aggregation ---
+    function getAllTransactions() {
+      const rows = [];
+      Object.values(sessionState.members).forEach(m => {
+        (m.history || []).forEach((h, idx) => {
+          const isNew = h.guestType === "new";
+          const dateKey = h.dateKey || getLocalDateKey(h.date);
+          rows.push({
+            id: h.id || `${m.phone}_${h.date}_${idx}`,
+            dateKey,
+            monthKey: dateKey.slice(0, 7),
+            phone: m.phone,
+            name: m.name,
+            workplace: m.workplace || "Unspecified",
+            promoSource: m.promoSource || "Unspecified",
+            guestType: isNew ? "new" : "return",
+            service: h.service || "General Service",
+            subtotal: Number(h.subtotal) || 0,
+            discount: Number(h.discount) || 0,
+            netAmount: Number(h.netAmount) || 0,
+            recordedBy: h.recordedBy || "—"
+          });
+        });
+      });
+      return rows.sort((a, b) => b.dateKey.localeCompare(a.dateKey));
+    }
+
+    function buildAggregates() {
+      const members = Object.values(sessionState.members);
+      const txs = getAllTransactions();
+      const daily = {}, monthly = {}, hospitals = {}, sources = {};
+
+      members.forEach(m => {
+        const hName = (m.workplace || "Unspecified").trim() || "Unspecified";
+        const hKey = hName.toLowerCase();
+        if (!hospitals[hKey]) hospitals[hKey] = { name: hName, members: 0, newVisits: 0, returnVisits: 0, totalVisits: 0, revenue: 0 };
+        hospitals[hKey].members += 1;
+
+        const sName = (m.promoSource || "Unspecified").trim() || "Unspecified";
+        const sKey = sName.toLowerCase();
+        if (!sources[sKey]) sources[sKey] = { name: sName, members: 0, totalVisits: 0, revenue: 0 };
+        sources[sKey].members += 1;
+      });
+
+      txs.forEach(tx => {
+        if (!daily[tx.dateKey]) daily[tx.dateKey] = { dateKey: tx.dateKey, newCount: 0, returnCount: 0, total: 0, discount: 0, revenue: 0 };
+        if (tx.guestType === "new") daily[tx.dateKey].newCount += 1; else daily[tx.dateKey].returnCount += 1;
+        daily[tx.dateKey].total += 1; daily[tx.dateKey].discount += tx.discount; daily[tx.dateKey].revenue += tx.netAmount;
+
+        if (!monthly[tx.monthKey]) monthly[tx.monthKey] = { monthKey: tx.monthKey, newCount: 0, returnCount: 0, total: 0, discount: 0, revenue: 0, uniquePhones: new Set() };
+        if (tx.guestType === "new") monthly[tx.monthKey].newCount += 1; else monthly[tx.monthKey].returnCount += 1;
+        monthly[tx.monthKey].total += 1; monthly[tx.monthKey].discount += tx.discount; monthly[tx.monthKey].revenue += tx.netAmount;
+        monthly[tx.monthKey].uniquePhones.add(tx.phone);
+
+        const hKey = tx.workplace.toLowerCase();
+        if (!hospitals[hKey]) hospitals[hKey] = { name: tx.workplace, members: 0, newVisits: 0, returnVisits: 0, totalVisits: 0, revenue: 0 };
+        if (tx.guestType === "new") hospitals[hKey].newVisits += 1; else hospitals[hKey].returnVisits += 1;
+        hospitals[hKey].totalVisits += 1; hospitals[hKey].revenue += tx.netAmount;
+
+        const sKey = tx.promoSource.toLowerCase();
+        if (!sources[sKey]) sources[sKey] = { name: tx.promoSource, members: 0, totalVisits: 0, revenue: 0 };
+        sources[sKey].totalVisits += 1; sources[sKey].revenue += tx.netAmount;
+      });
+
+      return { daily, monthly, hospitals, sources };
+    }
+
+    function updateTodayBar() {
+      const todayKey = getLocalDateKey();
+      const { daily } = buildAggregates();
+      const d = daily[todayKey] || { newCount: 0, returnCount: 0, total: 0, revenue: 0 };
+      document.getElementById("today-date-label").textContent = `${t("todayLabel")} (${formatDateLabel(todayKey)})`;
+      document.getElementById("bar-today-new").textContent = d.newCount;
+      document.getElementById("bar-today-return").textContent = d.returnCount;
+      document.getElementById("bar-today-total").textContent = d.total;
+      document.getElementById("bar-today-rev").textContent = money(d.revenue);
+    }
+
+    // --- Tab 2: Registration ---
+    document.getElementById("register-form").addEventListener("submit", async function (e) {
+      e.preventDefault();
+      hideAlert("register-alert");
+      const name = document.getElementById("reg-name").value.trim();
+      const phone = normalizePhone(document.getElementById("reg-phone").value);
+      const workplace = document.getElementById("reg-workplace").value.trim();
+      const promoSource = document.getElementById("reg-source").value.trim();
+
+      if (phone.length !== 10) return showAlert("register-alert", t("invalidPhone"), "error");
+      if (sessionState.members[phone]) {
+        return showAlert("register-alert", t("alreadyReg", { name: sessionState.members[phone].name, phone: formatPhone(phone) }), "error");
+      }
+
+      const btn = document.getElementById("reg-submit-btn");
+      btn.disabled = true;
+      try {
+        const data = await apiCall({ action: "register", name, phone, workplace, promoSource, registeredAt: getLocalDateKey() });
+        applySnapshot(data);
+        document.getElementById("register-form").reset();
+        document.getElementById("signin-phone").value = formatPhone(phone);
+        switchTab("records");
+        loadMemberCard(sessionState.members[phone]);
+        showAlert("signin-alert", t("regSuccess", { name }), "success");
+      } catch (err) {
+        showAlert("register-alert", err.message, "error");
+      } finally {
+        btn.disabled = false;
+      }
+    });
+
+    function renderDirectory() {
+      const s = sessionState.settings;
+      const q = (document.getElementById("dir-search").value || "").toLowerCase().trim();
+      const filtered = Object.values(sessionState.members)
+        .filter(m => !q || m.name.toLowerCase().includes(q) || m.workplace.toLowerCase().includes(q) || m.promoSource.toLowerCase().includes(q) || m.phone.includes(q.replace(/\D/g, "") || q))
+        .sort((a, b) => String(b.registeredAt).localeCompare(String(a.registeredAt)));
+
+      const tbody = document.getElementById("dir-body");
+      if (!filtered.length) {
+        tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;color:#64748b;padding:20px;">${escapeHTML(t("noMembers"))}</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = filtered.map(m => {
+        const isFirst = m.visits === 0;
+        const badgeText = isFirst
+          ? (currentLang === "zh" ? `新客立减 ${formatShortMoney(s.firstTimeAmount)}` : `${formatShortMoney(s.firstTimeAmount)} Off First`)
+          : (currentLang === "zh" ? `回头客 ${s.continuingPercent}% 折` : `${s.continuingPercent}% Off Return`);
+        const badge = isFirst ? `<span class="badge badge-first">${badgeText}</span>` : `<span class="badge badge-cont">${badgeText}</span>`;
+        return `
+          <tr>
+            <td><strong>${escapeHTML(m.name)}</strong></td>
+            <td style="white-space:nowrap;">${escapeHTML(formatPhone(m.phone))}</td>
+            <td>${escapeHTML(m.workplace)}</td>
+            <td>${escapeHTML(m.promoSource)}</td>
+            <td>${badge}</td>
+            <td class="num-col">${m.visits}</td>
+            <td><button class="btn btn-secondary" style="min-height:32px;padding:5px 10px;font-size:0.8rem;" onclick="quickSignIn('${m.phone}')">${escapeHTML(t("btnCheckIn"))}</button></td>
+          </tr>
+        `;
+      }).join("");
+    }
+
+    function quickSignIn(phone) {
+      const m = sessionState.members[phone];
+      if (!m) return;
+      document.getElementById("signin-phone").value = formatPhone(phone);
+      switchTab("records");
+      loadMemberCard(m);
+    }
+
+    // --- Tab 3: Check-In ---
+    document.getElementById("signin-form").addEventListener("submit", function (e) {
+      e.preventDefault();
+      hideAlert("signin-alert");
+      const phone = normalizePhone(document.getElementById("signin-phone").value);
+      if (phone.length !== 10) {
+        document.getElementById("member-card").classList.remove("show");
+        return showAlert("signin-alert", t("invalidPhone"), "error");
+      }
+      const m = sessionState.members[phone];
+      if (!m) {
+        document.getElementById("member-card").classList.remove("show");
+        showAlert("signin-alert", t("notFoundRedirect", { phone: formatPhone(phone) }), "info");
+        document.getElementById("reg-phone").value = formatPhone(phone);
+        setTimeout(() => { hideAlert("signin-alert"); switchTab("register"); document.getElementById("reg-name").focus(); }, 900);
+        return;
+      }
+      loadMemberCard(m);
+    });
+
+    function loadMemberCard(m) {
+      currentMemberPhone = m.phone;
+      const isFirst = m.visits === 0;
+      const s = sessionState.settings;
+      document.getElementById("mc-name").textContent = m.name;
+      document.getElementById("mc-meta").textContent = `${m.workplace} • ${formatPhone(m.phone)} • ${m.promoSource}`;
+      document.getElementById("mc-visits").textContent = currentLang === "zh" ? `已消费 ${m.visits} 次` : `${m.visits} Visit${m.visits === 1 ? "" : "s"}`;
+
+      const banner = document.getElementById("mc-benefit-banner");
+      const title = document.getElementById("mc-benefit-title");
+      const sub = document.getElementById("mc-benefit-sub");
+      if (isFirst) {
+        banner.className = "benefit-banner first-timer";
+        title.textContent = currentLang === "zh" ? `新客首单优惠：立减 ${formatShortMoney(s.firstTimeAmount)}` : `NEW GUEST PROMO: ${formatShortMoney(s.firstTimeAmount)} OFF TODAY`;
+        sub.textContent = currentLang === "zh" ? `之后每次消费自动享 ${s.continuingPercent}% 折扣。` : `Future visits automatically receive ${s.continuingPercent}% off.`;
+      } else {
+        banner.className = "benefit-banner continuing";
+        title.textContent = currentLang === "zh" ? `回头客福利：享 ${s.continuingPercent}% 折扣` : `RETURN GUEST BENEFIT: ${s.continuingPercent}% OFF TODAY`;
+        sub.textContent = currentLang === "zh" ? `持续医护专属折扣已激活。` : `Continuing health professional discount active.`;
+      }
+      updateCalculator();
+      document.getElementById("member-card").classList.add("show");
+    }
+
+    function updateCalculator() {
+      const m = sessionState.members[currentMemberPhone];
+      if (!m) return;
+      const s = sessionState.settings;
+      const subtotal = Math.max(0, parseFloat(document.getElementById("service-subtotal").value) || 0);
+      const disc = subtotal > 0 ? (m.visits === 0 ? Math.min(s.firstTimeAmount, subtotal) : subtotal * (s.continuingPercent / 100)) : 0;
+      document.getElementById("calc-sub").textContent = money(subtotal);
+      document.getElementById("calc-disc").textContent = `-${money(disc)}`;
+      document.getElementById("calc-final").textContent = money(Math.max(0, subtotal - disc));
+    }
+
+    document.getElementById("checkout-form").addEventListener("submit", async function (e) {
+      e.preventDefault();
+      const m = sessionState.members[currentMemberPhone];
+      if (!m) return;
+      const s = sessionState.settings;
+      const isFirst = m.visits === 0;
+      const service = document.getElementById("service-name").value.trim() || "General Service";
+      const subtotal = Math.max(0, parseFloat(document.getElementById("service-subtotal").value) || 0);
+      const discount = isFirst ? Math.min(s.firstTimeAmount, subtotal) : Number((subtotal * (s.continuingPercent / 100)).toFixed(2));
+      const netAmount = Number(Math.max(0, subtotal - discount).toFixed(2));
+      const txId = `tx_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`;
+
+      const btn = document.getElementById("checkin-submit-btn");
+      btn.disabled = true;
+      try {
+        const data = await apiCall({
+          action: "checkin",
+          id: txId,
+          dateKey: getLocalDateKey(),
+          phone: m.phone,
+          name: m.name,
+          workplace: m.workplace,
+          promoSource: m.promoSource,
+          guestType: isFirst ? "new" : "return",
+          service,
+          subtotal,
+          discount,
+          netAmount
+        });
+        applySnapshot(data);
+        document.getElementById("service-name").value = "";
+        document.getElementById("service-subtotal").value = "";
+        showAlert("signin-alert", t("recordedSuccess", { service, name: m.name, net: money(netAmount) }), "success");
+      } catch (err) {
+        showAlert("signin-alert", err.message, "error");
+      } finally {
+        btn.disabled = false;
+      }
+    });
+
+    function clearSignIn() {
+      currentMemberPhone = null;
+      document.getElementById("signin-phone").value = "";
+      document.getElementById("service-name").value = "";
+      document.getElementById("service-subtotal").value = "";
+      document.getElementById("member-card").classList.remove("show");
+      hideAlert("signin-alert");
+    }
+
+    async function deleteTransaction(txId) {
+      if (!isAdmin() || !confirm(t("confirmUndo"))) return;
+      try {
+        const data = await apiCall({ action: "deleteTx", id: txId });
+        applySnapshot(data);
+      } catch (err) {
+        alert(err.message);
+      }
+    }
+
+    function renderTransactions() {
+      const admin = isAdmin();
+      const txs = getAllTransactions();
+      const q = (document.getElementById("tx-search").value || "").toLowerCase().trim();
+      const showAll = !admin || document.getElementById("tx-show-all").checked;
+      const monthInput = document.getElementById("tx-month-filter");
+      if (!monthInput.value) monthInput.value = getLocalMonthKey();
+
+      const filtered = txs.filter(tx => {
+        if (admin && !showAll && tx.monthKey !== monthInput.value) return false;
+        if (!q) return true;
+        return tx.name.toLowerCase().includes(q) || tx.workplace.toLowerCase().includes(q) || tx.service.toLowerCase().includes(q) || tx.phone.includes(q.replace(/\D/g, "") || q);
+      });
+
+      const tbody = document.getElementById("tx-body");
+      const tfoot = document.getElementById("tx-foot");
+      const colSpan = admin ? 10 : 9;
+
+      if (!filtered.length) {
+        tbody.innerHTML = `<tr><td colspan="${colSpan}" style="text-align:center;color:#64748b;padding:20px;">${escapeHTML(t("noRecords"))}</td></tr>`;
+        tfoot.innerHTML = "";
+        return;
+      }
+
+      let sOrig = 0, sDisc = 0, sNet = 0;
+      tbody.innerHTML = filtered.map(tx => {
+        sOrig += tx.subtotal; sDisc += tx.discount; sNet += tx.netAmount;
+        const badge = tx.guestType === "new"
+          ? `<span class="badge badge-first">${escapeHTML(t("newGuestBadge"))}</span>`
+          : `<span class="badge badge-cont">${escapeHTML(t("returnGuestBadge"))}</span>`;
+        const actionCell = admin
+          ? `<td><button class="btn btn-danger-sm" onclick="deleteTransaction('${escapeHTML(tx.id)}')">${escapeHTML(t("btnUndo"))}</button></td>`
+          : "";
+        return `
+          <tr>
+            <td style="white-space:nowrap;">${escapeHTML(tx.dateKey)}</td>
+            <td><strong>${escapeHTML(tx.name)}</strong></td>
+            <td>${escapeHTML(tx.workplace)}</td>
+            <td>${badge}</td>
+            <td>${escapeHTML(tx.service)}</td>
+            <td class="num-col">${money(tx.subtotal)}</td>
+            <td class="num-col" style="color:var(--primary);">-${money(tx.discount)}</td>
+            <td class="num-col"><strong>${money(tx.netAmount)}</strong></td>
+            <td>${escapeHTML(tx.recordedBy)}</td>
+            ${actionCell}
+          </tr>
+        `;
+      }).join("");
+
+      tfoot.innerHTML = `
+        <tr>
+          <td colspan="5">${escapeHTML(t("lblTotal"))} (${filtered.length})</td>
+          <td class="num-col">${money(sOrig)}</td>
+          <td class="num-col">-${money(sDisc)}</td>
+          <td class="num-col">${money(sNet)}</td>
+          <td colspan="${admin ? 2 : 1}"></td>
+        </tr>
+      `;
+    }
+
+    // --- Tab 4: Auto Stats (Admin Only) ---
+    function selectReportMonth(mk) {
+      document.getElementById("report-month-filter").value = mk;
+      document.getElementById("show-all-days").checked = false;
+      renderReports();
+    }
+
+    function renderReports() {
+      const todayKey = getLocalDateKey();
+      const curMonth = getLocalMonthKey();
+      const mInput = document.getElementById("report-month-filter");
+      if (!mInput.value) mInput.value = curMonth;
+      const selMonth = mInput.value;
+      const showAllDays = document.getElementById("show-all-days").checked;
+
+      const { daily, monthly, hospitals, sources } = buildAggregates();
+      if (!monthly[curMonth]) monthly[curMonth] = { monthKey: curMonth, newCount: 0, returnCount: 0, total: 0, discount: 0, revenue: 0, uniquePhones: new Set() };
+
+      const td = daily[todayKey] || { newCount: 0, returnCount: 0, total: 0, revenue: 0 };
+      document.getElementById("rep-today-heading").textContent = `${t("todayLabel")} — ${formatDateLabel(todayKey)}`;
+      document.getElementById("rep-today-new").textContent = td.newCount;
+      document.getElementById("rep-today-return").textContent = td.returnCount;
+      document.getElementById("rep-today-total").textContent = td.total;
+      document.getElementById("rep-today-rev").textContent = money(td.revenue);
+
+      const ms = monthly[selMonth] || { newCount: 0, returnCount: 0, total: 0, revenue: 0 };
+      document.getElementById("rep-month-heading").textContent = formatMonthLabel(selMonth);
+      document.getElementById("rep-month-new").textContent = ms.newCount;
+      document.getElementById("rep-month-return").textContent = ms.returnCount;
+      document.getElementById("rep-month-total").textContent = ms.total;
+      document.getElementById("rep-month-rev").textContent = money(ms.revenue);
+
+      const mRows = Object.values(monthly).sort((a, b) => b.monthKey.localeCompare(a.monthKey));
+      let mNew = 0, mRet = 0, mTot = 0, mDisc = 0, mRev = 0; const allU = new Set();
+      document.getElementById("monthly-report-body").innerHTML = mRows.map(m => {
+        mNew += m.newCount; mRet += m.returnCount; mTot += m.total; mDisc += m.discount; mRev += m.revenue;
+        m.uniquePhones.forEach(p => allU.add(p));
+        const sel = (!showAllDays && m.monthKey === selMonth) ? "selected-month" : "";
+        return `<tr class="clickable-row ${sel}" onclick="selectReportMonth('${m.monthKey}')">
+          <td><strong>${escapeHTML(formatMonthLabel(m.monthKey))}</strong></td>
+          <td class="num-col"><span class="badge badge-first">${m.newCount}</span></td>
+          <td class="num-col"><span class="badge badge-cont">${m.returnCount}</span></td>
+          <td class="num-col"><strong>${m.total}</strong></td>
+          <td class="num-col">${m.uniquePhones.size}</td>
+          <td class="num-col">${money(m.discount)}</td>
+          <td class="num-col"><strong>${money(m.revenue)}</strong></td>
+        </tr>`;
+      }).join("");
+      document.getElementById("monthly-report-foot").innerHTML = `<tr><td>${escapeHTML(t("lblTotal"))}</td><td class="num-col">${mNew}</td><td class="num-col">${mRet}</td><td class="num-col">${mTot}</td><td class="num-col">${allU.size}</td><td class="num-col">${money(mDisc)}</td><td class="num-col">${money(mRev)}</td></tr>`;
+
+      const dRows = Object.values(daily).filter(d => showAllDays || d.dateKey.startsWith(selMonth)).sort((a, b) => b.dateKey.localeCompare(a.dateKey));
+      const dBody = document.getElementById("daily-report-body");
+      const dFoot = document.getElementById("daily-report-foot");
+      if (!dRows.length) {
+        dBody.innerHTML = `<tr><td colspan="6" style="text-align:center;color:#64748b;padding:20px;">${escapeHTML(t("noData"))}</td></tr>`;
+        dFoot.innerHTML = "";
+      } else {
+        let dN = 0, dR = 0, dT = 0, dD = 0, dRev = 0;
+        dBody.innerHTML = dRows.map(r => {
+          dN += r.newCount; dR += r.returnCount; dT += r.total; dD += r.discount; dRev += r.revenue;
+          return `<tr><td><strong>${escapeHTML(formatDateLabel(r.dateKey))}</strong></td><td class="num-col"><span class="badge badge-first">${r.newCount}</span></td><td class="num-col"><span class="badge badge-cont">${r.returnCount}</span></td><td class="num-col"><strong>${r.total}</strong></td><td class="num-col">${money(r.discount)}</td><td class="num-col"><strong>${money(r.revenue)}</strong></td></tr>`;
+        }).join("");
+        dFoot.innerHTML = `<tr><td>${escapeHTML(t("lblTotal"))}</td><td class="num-col">${dN}</td><td class="num-col">${dR}</td><td class="num-col">${dT}</td><td class="num-col">${money(dD)}</td><td class="num-col">${money(dRev)}</td></tr>`;
+      }
+
+      const hRows = Object.values(hospitals).sort((a, b) => b.revenue - a.revenue || b.totalVisits - a.totalVisits);
+      const hBody = document.getElementById("hospital-report-body");
+      const hFoot = document.getElementById("hospital-report-foot");
+      if (!hRows.length) {
+        hBody.innerHTML = `<tr><td colspan="6" style="text-align:center;color:#64748b;padding:20px;">${escapeHTML(t("noData"))}</td></tr>`;
+        hFoot.innerHTML = "";
+      } else {
+        let hM = 0, hN = 0, hR = 0, hT = 0, hRev = 0;
+        hBody.innerHTML = hRows.map(h => {
+          hM += h.members; hN += h.newVisits; hR += h.returnVisits; hT += h.totalVisits; hRev += h.revenue;
+          return `<tr><td><strong>${escapeHTML(h.name)}</strong></td><td class="num-col">${h.members}</td><td class="num-col">${h.newVisits}</td><td class="num-col">${h.returnVisits}</td><td class="num-col"><strong>${h.totalVisits}</strong></td><td class="num-col"><strong>${money(h.revenue)}</strong></td></tr>`;
+        }).join("");
+        hFoot.innerHTML = `<tr><td>${escapeHTML(t("lblTotal"))}</td><td class="num-col">${hM}</td><td class="num-col">${hN}</td><td class="num-col">${hR}</td><td class="num-col">${hT}</td><td class="num-col">${money(hRev)}</td></tr>`;
+      }
+
+      const sRows = Object.values(sources).sort((a, b) => b.revenue - a.revenue || b.members - a.members);
+      document.getElementById("source-report-body").innerHTML = !sRows.length
+        ? `<tr><td colspan="4" style="text-align:center;color:#64748b;padding:20px;">${escapeHTML(t("noData"))}</td></tr>`
+        : sRows.map(s => `<tr><td><strong>${escapeHTML(s.name)}</strong></td><td class="num-col">${s.members}</td><td class="num-col">${s.totalVisits}</td><td class="num-col"><strong>${money(s.revenue)}</strong></td></tr>`).join("");
+    }
+
+    // --- Tab 5: Admin Promo & Security Actions ---
+    document.getElementById("settings-form").addEventListener("submit", async function (e) {
+      e.preventDefault();
+      if (!isAdmin()) return;
+      const firstTimeAmount = Math.max(0, parseFloat(document.getElementById("set-first-dollar").value) || 0);
+      const continuingPercent = Math.min(100, Math.max(0, parseFloat(document.getElementById("set-return-pct").value) || 0));
+      try {
+        const data = await apiCall({ action: "saveSettings", firstTimeAmount, continuingPercent });
+        applySnapshot(data);
+        showAlert("settings-alert", t("promoSaved", { first: formatShortMoney(firstTimeAmount), pct: continuingPercent }), "success");
+      } catch (err) {
+        showAlert("settings-alert", err.message, "error");
+      }
+    });
+
+    async function resetDefaultSettings() {
+      if (!isAdmin()) return;
+      try {
+        const data = await apiCall({ action: "saveSettings", firstTimeAmount: 10, continuingPercent: 10 });
+        applySnapshot(data);
+        showAlert("settings-alert", t("promoReset"), "info");
+      } catch (err) {
+        showAlert("settings-alert", err.message, "error");
+      }
+    }
+
+    async function revokeAllDevices() {
+      if (!isAdmin() || !confirm(t("confirmRevoke"))) return;
+      try {
+        await apiCall({ action: "revokeAllSessions" });
+        signOut("All devices have been signed out. / 所有设备已强制下线。");
+      } catch (err) {
+        showAlert("sec-alert", err.message, "error");
+      }
+    }
+
+    function forgetSavedServerUrl() {
+      localStorage.removeItem(URL_KEY);
+      document.getElementById("login-url").value = "";
+      document.getElementById("login-key").value = "";
+      document.getElementById("server-config-box").classList.remove("hidden");
+      updateServerToggleUI();
+      showAlert("sec-alert", "Saved server URL cleared from this device. / 已清除本机保存的服务器网址。", "info");
+    }
+
+    // --- Admin CSV Exports ---
+    function downloadCSV(filename, headers, rows) {
+      const esc = v => `"${String(v ?? "").replace(/"/g, '""')}"`;
+      const content = "\uFEFF" + [headers.map(esc).join(","), ...rows.map(r => r.map(esc).join(","))].join("\n");
+      const blob = new Blob([content], { type: "text/csv;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url; a.download = filename; a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function exportMembersCSV() {
+      if (!isAdmin()) return;
+      const ms = Object.values(sessionState.members);
+      if (!ms.length) return alert(t("noMembers"));
+      downloadCSV(`health-benefits-members-${getLocalDateKey()}.csv`,
+        ["Name / 姓名", "Phone / 电话", "Hospital / 医院", "Promo Source / 宣传来源", "Visits / 次数", "Registered / 登记日期"],
+        ms.map(m => [m.name, formatPhone(m.phone), m.workplace, m.promoSource, m.visits, m.registeredAt]));
+    }
+    function exportTransactionsCSV() {
+      if (!isAdmin()) return;
+      const txs = getAllTransactions();
+      if (!txs.length) return alert(t("noRecords"));
+      downloadCSV(`health-benefits-records-${getLocalDateKey()}.csv`,
+        ["Date / 日期", "Guest / 姓名", "Phone / 电话", "Hospital / 医院", "Type / 类型", "Service / 服务", "Original / 原价", "Discount / 折扣", "Received / 实收", "Staff / 操作员"],
+        txs.map(tx => [tx.dateKey, tx.name, formatPhone(tx.phone), tx.workplace, tx.guestType === "new" ? "New Guest 新客" : "Return Guest 回头客", tx.service, tx.subtotal.toFixed(2), tx.discount.toFixed(2), tx.netAmount.toFixed(2), tx.recordedBy]));
+    }
+    function exportMonthlyCSV() {
+      if (!isAdmin()) return;
+      const rows = Object.values(buildAggregates().monthly).sort((a, b) => b.monthKey.localeCompare(a.monthKey))
+        .map(m => [m.monthKey, m.newCount, m.returnCount, m.total, m.uniquePhones.size, m.discount.toFixed(2), m.revenue.toFixed(2)]);
+      if (!rows.length) return alert(t("noData"));
+      downloadCSV(`health-benefits-monthly-${getLocalDateKey()}.csv`, ["Month", "New", "Return", "Total", "Unique", "Discounts", "Net Revenue"], rows);
+    }
+    function exportDailyCSV() {
+      if (!isAdmin()) return;
+      const rows = Object.values(buildAggregates().daily).sort((a, b) => b.dateKey.localeCompare(a.dateKey))
+        .map(r => [r.dateKey, r.newCount, r.returnCount, r.total, r.discount.toFixed(2), r.revenue.toFixed(2)]);
+      if (!rows.length) return alert(t("noData"));
+      downloadCSV(`health-benefits-daily-${getLocalDateKey()}.csv`, ["Date", "New", "Return", "Total", "Discounts", "Net Revenue"], rows);
+    }
+    function exportHospitalCSV() {
+      if (!isAdmin()) return;
+      const rows = Object.values(buildAggregates().hospitals).sort((a, b) => b.revenue - a.revenue)
+        .map(h => [h.name, h.members, h.newVisits, h.returnVisits, h.totalVisits, h.revenue.toFixed(2)]);
+      if (!rows.length) return alert(t("noData"));
+      downloadCSV(`health-benefits-hospitals-${getLocalDateKey()}.csv`, ["Hospital", "Members", "New Visits", "Return Visits", "Total Visits", "Net Revenue"], rows);
+    }
+
+    // --- Boot ---
+    document.addEventListener("DOMContentLoaded", () => {
+      const savedUrl = localStorage.getItem(URL_KEY) || "";
+      if (savedUrl) {
+        document.getElementById("login-url").value = savedUrl;
+      }
+      setLanguage(currentLang);
+    });
+  </script>
+</body>
+</html>
